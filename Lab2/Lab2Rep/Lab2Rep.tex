@@ -81,10 +81,32 @@ For small values, the particles are very concentrated on a single point which de
 The process noise model choice will depend on the motion model, if the model used in the prediction does not correspond exactly to the true one, more noise can compensate for that as the spread of the particle cloud will be bigger. If in this case the noise is too small, it will fail to track.
 
 \paragraph{12 - How does the choice of the motion model affect the precision/accuracy of the results? How does it change the number of particles you need?}
-A motion model that contains
+A motion model that is not the correct one will need of a greater process noise to keep track and thus the use of a more spread particle cloud which will require more particles.
 
 \paragraph{13 - What do you think you can do to detect the outliers in third type of measurements? Hint: what happens to the likelihoods of the observation when it is far away from what the filter has predicted?}
+Setting a threshold for the mean likelihood of the measurement given the state, if it is too low it can be assumed to be an outlier. 
 
 \paragraph{14 - Using 1000 particles, what is the best precision you get for the second type of measurements of the object moving on the circle when modelling a fixed, a linear or a circular motion(using the best parameter setting)? How sensitive is the filter to the correct choice of the parameters for each type of motion?}
+For both the linear and the circular motion models low values for the process noise can be used but for the fixed motion the process noise has to be much bigger to compensate. Linear and circular motion models have small differences but still the circular motion gives smaller error as one would expect. The lowest errors and the parameters are shown in Table \ref{q14}. When choosing the parameters, for big enough values of Q, the estimation is more sensitive on the value of R, and more clearly in the fixed motion model.
+
+\begin{table}[]
+\centering
+\caption{Estimation error for the best combination of parameters trying to estimate the circular movement of an object with different motion models.}
+\label{q14}
+\begin{tabular}{ccc|c}
+\textbf{Motion model} & \textbf{\texttt{Sim\_Q}} & \textbf{\texttt{Sim\_R}} & \textbf{Estimation error} \\ \hline
+\textit{Fixed}        & 300                          & 50                       & \(11.9 \pm 6.3 \)              \\
+\textit{Linear}       & 300                          & 5                        & \( 7.5 \pm 4.0     \)           \\
+\textit{Circular}     & 300                          & 3                        & \(7.4 \pm 3.8\)               
+\end{tabular}
+\end{table}
+
+\subsection{Main problem: Monte Carlo Localization}
+
+\paragraph{15 - What parameters affect the mentioned outlier detection approach? What will be the result of the mentioned method if you model a very weak measurement noise \(|Q| \to 0\)?}
+The threshold selected and the measurement noise model assumed. A very weak measurement noise will result in classifying all the measurements as outliers as for smaller Q the likelihood function would have a very narrow peak around the measurement and thus being it very easy that the likelihood falls beyond the threshold.
+
+\paragraph{16 - What happens to the weight of the particles if you do not detect outliers?}
+If an outlier measurement is not detected the weights of the particles closer to the outlier are given a much greater value.
 
 \end{document}
